@@ -1,0 +1,67 @@
+﻿@model IEnumerable<SimManagementSystem.Models.HistoryViewModel>
+
+@{
+    ViewBag.Title = "AddMSISDNoHistory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">History List</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Form Name</th>
+                                    <th>Action Date</th>
+                                    <th>UserId</th>
+                                    <th>User Name</th>
+                                    <th>Action Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Form_Name)
+                                        </td>
+                                        <td>
+                                            @{
+                                                DateTime val = Convert.ToDateTime(item.Action_Date);
+                                                <span>@val.ToShortDateString()</span>
+                                            }
+
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UserId)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.User_Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Action_Name)
+                                        </td>
+                                    </tr>
+                                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
+<script>
+    $(function () {
+        Datatables();
+    });
+</script>

@@ -1,0 +1,165 @@
+﻿
+@{
+    ViewBag.Title = "ReturnSim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">Sim Return Form</h3>
+                <div class="card-tools">
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Mobile No. &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <select id="MobileNumber" name="MobileNumber" class="form-control select2" style="width: 100%;">
+                                @if (ViewBag.MobileNumber != null)
+                                {
+                                    <option value="">Select Mobile No.</option>
+                                    foreach (var item in ViewBag.MobileNumber)
+                                    {
+                                        if (item.Text != null)
+                                        {
+                                            <option value="@item.Value">
+                                                @item.Text
+                                            </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group right" style="padding-top: 22px;">
+                        <label></label>
+                        <button id="addupbtn" class="btn btn-success mt-2" onclick="CheckValidation()">Sim Return</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Number List</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>IT Reference No</th>
+                                    <th>Mobile Network</th>
+                                    <th>Number</th>
+                                    <th>Added By</th>
+                                    <th>Added Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblasignnumber"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+    function CheckValidation() {
+
+        if ($('#MobileNumber :selected').val() == "") 
+        {
+            toastr.error('Required Fields are Mandatory...!')
+        }
+        else {
+            Return_Assign_Sim();
+        }
+    }
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(function () {
+        GetSimList();
+        window.alert = function () { }
+        $('.select2').select2();
+    });
+    function GetSimList() {
+        $.ajax({
+            type: 'GET',
+            url: '/MobileNumberSeries/GetNumbers',
+            success: function (response) {
+                debugger
+                var op = '';
+                $.each(response, function (key, item) {
+                    op += '<tr>' + '<td>' + item.ItNumberReference + '</td><td>' + item.TelNetwork + '</td><td>' + item.TelNumber + '</td><td>' + item.CreatedBy + '</td><td>' + item.Modifieddates + '</td>';
+                });
+                $('#tblasignnumber').empty().append(op);
+                Datatables();
+            },
+            failure: function (response) {
+                $('#result').html(response);
+            }
+        });
+    }
+
+    function Return_Assign_Sim()
+    {
+            var Msisdno = {};
+            Msisdno.MobileNumber = $('#MobileNumber option:selected').val();
+            var data1 = JSON.stringify(Msisdno);
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: '/SimMobileIssuance/Returnsavesim', 
+                data: data1,
+                success: function (response) {
+                    var Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        progressBar: true,
+                        timer: 3000
+                    });
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Sim Return Successfully..!'
+                    })
+                    RefreshPage();
+                },
+                failure: function (response) {
+                    $('#result').html(response);
+                }
+            });
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,167 @@
+﻿@using SimManagementSystem.Models
+@{
+    ViewBag.Title = "AssignMenu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<br />
+<div class="alert alert-info" role="alert" id="alterinfo">
+    Menu Assign Successfully..! Please Logout to see Change. <a href="@Url.Action("Logout","User")" class="alert-link">Logout</a>. Give it a click if you like. 
+</div>
+<section class="content">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h3 class="card-title">Assign Menu To User</h3>
+                </div>
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                     <label>Employee &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                                <select id="EMPID" name="EMPID" class="select2 form-control">
+                                    @if (ViewBag.EmpList != null)
+                                    {
+                                        <option value="">Select Employee</option>
+                                        foreach (var item in ViewBag.EmpList)
+                                        {
+                                            if (item.Text != null) 
+                                            {
+                                                <option value="@item.Value">
+                                                    @item.Text
+                                                </option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <div class="col-md-8">
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h3 class="card-title">Menus List</h3>
+                    <div class="card-tools">
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" placeholder="Search Menu" id="myInput">
+                            <div class="input-group-append">
+                                <div class="btn btn-primary">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive mailbox-messages">
+                        <table class="table table-hover table-striped" id="tblmenus">
+                            <tbody>
+                                @foreach (ViewModelMenus i in ViewBag.Menus)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="">
+                                                @*<input type="checkbox"  name="type" value="@i.ID" id="@i.ID">*@
+                                                <input id="@i.ID" class="ads_Checkbox" type="checkbox" value="@i.ID" />
+                                                <label for="check1"></label>
+                                            </div>
+                                        </td>
+                                        <td class="mailbox-name"><b>@i.MenuDescription</b></td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td colspan="1"></td>
+                                    <td><button id="button" class="btn btn-info">save</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(function () {
+        $("#alterinfo").hide();
+            var local = [];
+            debugger
+
+            $("#EMPID").change(function () {
+                $.ajax({
+                    type: 'get',
+                    data: { UserID: $("#EMPID").val() },
+                    url: '/Menus/Checks',
+                    success: function (response) {
+                        if ($.isEmptyObject(response)) {
+                         $('input[type="checkbox"]').prop('checked', false);
+                        }
+                        else
+                        {
+                            $('input[type="checkbox"]').prop('checked', false);
+                            $.each(response, function (index, item) {
+                                $(":checkbox[id=" + item.MenuId + "]").prop("checked", true);
+                            });
+                        }
+                    }
+                });
+            })
+            $("#button").click(function () {
+                if ($('#EMPID :selected').val() == "")
+                {
+                    toastr.error('Required Fields are Mandatory...!')
+                }
+                else
+                {
+                    var sel = $('input[type=checkbox]:checked').map(function (_, el) {
+                        return $(el).val();
+                    }).get();
+                    $.ajax({
+                        type: 'post',
+                        data: { UserID: $("#EMPID").val(), values: JSON.stringify(sel) },
+                        url: '/Menus/Names',
+                        success: function (response) {
+                            var Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                progressBar: true,
+                                timer: 3000
+                            });
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Menu Assign Successfully..!'
+                            })
+                            $("#alterinfo").show();
+                        }
+                    });
+                }
+            })
+        });
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#tblmenus tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+

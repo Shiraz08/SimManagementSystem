@@ -1,0 +1,281 @@
+﻿@model IEnumerable<SimManagementSystem.Models.AssignMSISDViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">Assign MSISD to Number</h3>
+                <div class="card-tools">
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>IT Reference No &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <input type="hidden" class="form-control" id="ID" name="ID" />
+                            <input type="hidden" class="form-control" id="Added_By" name="Added_By" />
+                            <input type="hidden" class="form-control" id="Added_Date" name="Added_Date" />
+                            <input type="text" class="form-control" id="IT_Reference_No" name="IT_Reference_No" />
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile Network &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <select name="Mobile_Network" id="Mobile_Network" class="form-control select2" style="width: 100%;">
+                                <option value="">Select Mobile Network</option>
+                                <option value="Jazz">Jazz</option>
+                                <option value="Ufone">Ufone</option>
+                                <option value="Zong">Zong</option>
+                                <option value="Telenor">Telenor</option>
+                                <option value="Warid">Warid</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Sim MSISD No &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <select id="Sim_MSISD_No" name="Sim_MSISD_No" class="form-control select2" style="width: 100%;">
+                                @if (ViewBag.msisd != null)
+                                {
+                                    <option value="">Select MSISD No.</option>
+                                    foreach (var item in ViewBag.msisd)
+                                    {
+                                        if (item.Text != null)
+                                        {
+                                            <option value="@item.Value">
+                                                @item.Text
+                                            </option>
+                                        }
+                                    }
+                                }
+                            </select>
+
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile Number &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <input type="text" class="form-control" id="Mobile_Number" name="Mobile_Number" data-inputmask='"mask": "09999999999"' data-mask />
+                        </div>
+                        <div class="form-group right" style="padding-top: 22px;">
+                            <label></label>
+                            <button class="btn btn-success mt-2" id="addupbtn" onclick="CheckValidation()">Assign MSISD</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<br />
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Assign MSISD Number List</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>IT Reference No</th>
+                                    <th>Mobile Network</th>
+                                    <th>Mobile No.</th>
+                                    <th>Sim MSISD No</th>
+                                    <th>Added By</th>
+                                    <th>Added Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stutbl"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('[data-mask]').inputmask();
+    });
+    $(function () {
+        GetMSISDList();
+        window.alert = function () { }
+        $('.select2').select2();
+    });
+    function GetMSISDList() {
+        $.ajax({
+            type: 'GET',
+            url: '/AssignMSISD/GetAssignMSISD',
+            success: function (response) {
+                var op = '';
+                $.each(response, function (key, item) {
+                    op += '<tr><td>' + item.ID + '</td><td>' + item.IT_Reference_No + '</td><td>' + item.Mobile_Network + '</td><td>' + item.Mobile_Number + '</td><td>' + item.Sim_MSISD_No + '</td><td>' + item.Added_By + '</td><td>' + item.Added_Date + '</td>';
+                    op += '<td><a href="javascript:;"  class="btn btn-info mt-2" onclick="EditMSISD(\'' + item.ID + '\',\'' + item.IT_Reference_No + '\',\'' + item.Mobile_Network + '\',\'' + item.Mobile_Number + '\',\'' + item.Sim_MSISD_No + '\',\'' + item.Added_By + '\',\'' + item.Added_Date + '\')">Edit</a><a href="javascript:;" onclick="delmsisd(\'' + item.ID + '\')" class="btn btn-danger mt-2">Delete</a></td></tr>';
+                });
+                $('#stutbl').empty().append(op);
+                Datatables();
+            },
+            failure: function (response) {
+                $('#result').html(response);
+            }
+        });
+    }
+
+
+
+      function CheckValidation()
+      {
+          var letterNumber = /^[0-9a-zA-Z]+$/;
+          if ($('#IT_Reference_No').val().match(letterNumber))
+          {
+              if ($('#Mobile_Network :selected').val() == "" || $('#IT_Reference_No').val() == "" || $('#Mobile_Number').val() == "" || $('#Sim_MSISD_No :selected').val() == "") {
+                  toastr.error('Required Fields are Mandatory...!')
+              }
+              else {
+                  AssignMSISD();
+              }
+          }
+          else {
+              toastr.error('It reference number contain only text and number...!')
+          }
+
+    }
+
+
+
+
+    function AssignMSISD() {
+        var btn_name = $('#addupbtn').text();
+        if (btn_name == "Update")
+        {
+            var Msisdno = {};
+            Msisdno.ID = $('#ID').val();
+            Msisdno.IT_Reference_No = $('#IT_Reference_No').val();
+            Msisdno.Mobile_Network = $('#Mobile_Network :selected').val();
+            Msisdno.Mobile_Number = $('#Mobile_Number').val();
+            Msisdno.Sim_MSISD_No = $('#Sim_MSISD_No :selected').val();
+            Msisdno.Added_By = $('#Added_By').val();
+            Msisdno.Added_Date = $('#Added_Date').val();
+            var data1 = JSON.stringify(Msisdno);
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: '/AssignMSISD/Edit',
+                data: data1,
+                success: function (response) {
+
+                    var Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        progressBar: true,
+                        timer: 3000
+                    });
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'MSISD Number Update Successfully..!'
+                    })
+                    $('#IT_Reference_No').val('');
+                    $('#Mobile_Network').val('');
+                    $('#Sim_MSISD_No').val('');
+                    $('#Mobile_Number').val('');
+                    $('#addupbtn').empty().text('Add MSISD');
+                    RefreshPage();
+
+                },
+                failure: function (response) {
+                    $('#result').html(response);
+                }
+            });
+        }
+        else
+        {
+            var Msisdno = {};
+            Msisdno.IT_Reference_No = $('#IT_Reference_No').val();
+            Msisdno.Mobile_Network = $('#Mobile_Network :selected').val();
+            Msisdno.Mobile_Number = $('#Mobile_Number').val();
+            Msisdno.Sim_MSISD_No = $('#Sim_MSISD_No :selected').val();
+            var data1 = JSON.stringify(Msisdno);
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: '/AssignMSISD/Create',
+                data: data1,
+                success: function (response) {
+                    var Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        progressBar: true,
+                        timer: 3000
+                    });
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'MSISD Number Save Successfully..!'
+                    })
+                    $('#IT_Reference_No').val('');
+                    $('#Mobile_Network').val('');
+                    $('#Mobile_Number').val('');
+                    $('#Sim_MSISD_No').val('');
+                    RefreshPage();
+                },
+                failure: function (response) {
+                    $('#result').html(response);
+                }
+            });
+        }
+    }
+    function delmsisd(Id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var Msisdno = {};
+                Msisdno.Id = Id;
+                var data1 = JSON.stringify(Msisdno);
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST',
+                    url: '/AssignMSISD/Delete',
+                    data: data1,
+                    success: function (response) {
+                        Swal.fire('Deleted!','Your file has been deleted.','success')
+                        RefreshPage();
+                    },
+                    failure: function (response) {
+                        $('#result').html(response);
+                    }
+                });
+            }
+        })
+    }
+    function EditMSISD(ID, IT_Reference_No, Mobile_Network, Mobile_Number, Sim_MSISD_No, Added_By, Added_Date) {
+        $('#ID').val(ID);
+        $('#IT_Reference_No').val(IT_Reference_No);
+        $('#Mobile_Network').val(Mobile_Network);
+        $('#Mobile_Number').val(Mobile_Number);
+        $('#Sim_MSISD_No').val(Sim_MSISD_No);
+        $('#Added_By').val(Added_By);
+        $('#Added_Date').val(Added_Date);
+        $('#addupbtn').empty().text('Update');
+    }
+</script>

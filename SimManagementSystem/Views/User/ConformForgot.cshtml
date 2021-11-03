@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "ConformForgot";
+    Layout = "~/Views/Shared/_IdentityLayout.cshtml";
+}
+
+@using (Html.BeginForm("ConformForgot", "User", FormMethod.Post))
+{
+    <div class="card-body">
+        @if (ViewBag.ErrorMessages == 1)
+        {
+            <p class="login-box-msg"><b>Your OTP Code has been Expired, Please Re Generate OTP....!</b></p>
+            <br />
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <a href="@Url.Action("Login","User")" class="btn btn-info">Re Generate OTP</a>
+                                            </div>
+                                        </div>
+        }
+        else if (ViewBag.ErrorMessages == 0)
+        {
+            <p class="login-box-msg"><b>Your OTP is Expired After 2 Mints..!</b></p>
+            <input type="hidden" value="@ViewBag.userid" name="UserID" id="UserID" />
+            <div class="input-group mb-3">
+                <input type="number" class="form-control" placeholder="Enter OTP Code" id="OTPNumber" name="OTPNumber" /><br />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-user"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <input type="submit" value="Check OTP" class="btn btn-info" />
+                </div>
+            </div>
+        }
+        else if (ViewBag.ErrorMessages == 2)
+        {
+            <p class="login-box-msg"><b>Your OTP Code is Wrong, Please Check again..!</b></p>
+            <input type="hidden" value="@ViewBag.userid" name="UserID" id="UserID" />
+            <div class="input-group mb-3">
+                <input type="number" class="form-control" placeholder="Enter OTP Code" id="OTPNumber" name="OTPNumber" /><br />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-user"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <input type="submit" value="Check OTP" class="btn btn-info" />
+                </div>
+            </div>
+        }
+        @*<p class="login-box-msg">Use a local account to log in.</p>*@
+    </div>
+}

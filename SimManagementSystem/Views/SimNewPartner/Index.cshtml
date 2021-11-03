@@ -1,0 +1,423 @@
+﻿
+@{
+    ViewBag.Title = "AddSimMobileIssuance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">Assigned Sim New Partner Campus</h3>
+                <div class="card-tools">
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <input type="hidden" class="form-control" id="ID" name="ID" />
+                            <input type="hidden" class="form-control" id="Createby" name="Createby" /> 
+                            <input type="hidden" class="form-control" id="Createddate" name="Createddate" />
+                            <label>Designation &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <select id="EmployeeDesiginationID" name="EmployeeDesiginationID" class="form-control select2" style="width: 100%;" onchange="getCreditLimit();">
+                                @if (ViewBag.Designation != null)
+                                {
+                                    <option value="">Select Designation</option>
+                                    foreach (var item in ViewBag.Designation)
+                                    {
+                                        if (item.Text != null)
+                                        {
+                                            <option value="@item.Value">
+                                                @item.Text
+                                            </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Employee Shift &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <select id="EmployeeShift" name="EmployeeShift" class="form-control select2" style="width: 100%;" onchange="getCreditLimit();">
+                                <option value="">Select Employee Shift</option>
+                                <option value="Morning">Morning</option>
+                                <option value="Night">Night</option>
+                                <option value="Both">Both</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>CreditLimit &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <input type="text" class="form-control" id="CreditLimit" name="CreditLimit" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Owner Name &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <input type="text" class="form-control" id="OwnerName" name="OwnerName" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>CNIC &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <input class="form-control" id="CNIC" name="CNIC" type="text" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Voice Package Name &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <select id="VoicePackage" name="VoicePackage" class="form-control select2" style="width: 100%;">
+                                @if (ViewBag.VoicePackageName != null)
+                                {
+                                    <option value="">Select Voice Package.</option>
+                                    foreach (var item in ViewBag.VoicePackageName)
+                                    {
+                                        if (item.Text != null)
+                                        {
+                                            <option value="@item.Value">
+                                                @item.Text
+                                            </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Data Package &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <select id="DataPackage" name="DataPackage" class="form-control select2" style="width: 100%;">
+                                @if (ViewBag.DataPackageName != null)
+                                {
+                                    <option value="">Select Data Package.</option>
+                                    foreach (var item in ViewBag.DataPackageName)
+                                    {
+                                        if (item.Text != null)
+                                        {
+                                            <option value="@item.Value">
+                                                @item.Text
+                                            </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Mobile No. &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <select id="MobileNumber" name="MobileNumber" class="form-control select2" style="width: 100%;">
+                                @if (ViewBag.MobileNumber != null)
+                                {
+                                    <option value="">Select Mobile No.</option>
+                                    foreach (var item in ViewBag.MobileNumber)
+                                    {
+                                        if (item.Text != null)
+                                        {
+                                            <option value="@item.Value">
+                                                @item.Text
+                                            </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 ">
+                        <div class="form-group" style="padding-top:29px;"> 
+                            <label></label>
+                            <button id="addupbtn" class="btn btn-success" onclick="CheckValidation()">Assign Sim to new Partner</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Assigned Sim New Partner Campus List</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Employee Post</th>
+                                    <th>CNIC Number</th>
+                                    <th>Owner Name</th>
+                                    <th>Credit Limit</th>
+                                    <th>Voice Package</th>
+                                    <th>Data Package</th>
+                                    <th>Employee Shift</th>
+                                    <th>Sim Number</th> 
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stutbl"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+    function getCreditLimit()
+    {
+        var EmployeeShift = $('select#EmployeeShift option:selected').val();
+        var EmployeeDesiginationID = $('select#EmployeeDesiginationID option:selected').val();
+        if (EmployeeDesiginationID != "") 
+        {
+            $.ajax({
+                type: "GET",
+                url: "/SimNewPartner/GetCreditLimit",
+                data: { "EmployeeDesiginationID": EmployeeDesiginationID, "EmployeeShift": EmployeeShift },
+                success: function (data)
+                {
+                    if(data != true)
+                    {
+                        $("#CreditLimit").val('');
+                        $("#CreditLimit").val(data);
+                    }
+                    else
+                    {
+                        $("#CreditLimit").val('');
+                    }
+                }
+            });
+        }
+        else 
+        {
+            toastr.info('Please Select Desigination For get Credit Limit...!')
+        }
+
+    }
+    function getcnic()
+    {
+        var value = $('select#EmployeeName option:selected').val();
+        $.ajax({
+            type: "GET",
+            url: "/SimMobileIssuance/getEmployeeCNIC",
+            data: { "value": value },
+            success: function (data) {
+                $("#EmployeeCNIC").val('');
+                $("#EmployeeCNIC").val(data);
+            }
+        });
+    }
+    function CheckValidation() {
+        debugger;
+        if ($('#MobileNumber :selected').val() == "" || $('#EmployeeShift :selected').val() == "" || $('#DataPackage :selected').val() == "" || $('#CNIC').val() == "" || $('#Approvedby :selected').val() == "" || $('#Employee').val() == "" || $('#VoicePackage:selected').val() == "" || $("#DataPackage").val() == "" || $('#CreditLimit :selected').val() == "") {
+            toastr.error('Required Fields are Mandatory...!')
+        }
+        else {
+            Assignsimtopartnercampus();
+        }
+    }
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(function () {
+        GetMSISDList();
+        window.alert = function () { }
+        $('.select2').select2();
+    });
+    function GetMSISDList() {
+        $.ajax({
+            type: 'GET',
+            url: '/SimNewPartner/GetData',
+            success: function (response) {
+                debugger
+                var op = '';
+                $.each(response, function (key, item)
+                {
+                    debugger
+                    op += '<tr><td>' + item.EmployeePost + '</td><td>' + item.CNICNumber + '</td><td>' + item.OwnerName + '</td><td>' + item.CreditLimit + '</td><td>' + item.VoicePackageName + '</td><td>' + item.DataPackage + '</td><td>' + item.EmployeeShift + '</td><td>' + item.MobileNumber + '</td>';
+                    op += '<td><a href="javascript:;"  class="btn btn-info mt-2" onclick="Data(\'' + item.ID + '\',\'' + item.EmployeePost + '\',\'' + item.CNICNumber + '\',\'' + item.OwnerName + '\',\'' + item.Createddate + '\',\'' + item.CreditLimit + '\',\'' + item.VoicePackageName + '\',\'' + item.DataPackage + '\',\'' + item.EmployeeShift + '\',\'' + item.Createby + '\',\'' + item.EmployeeDesiginationID + '\',\'' + item.VoicePackageID + '\',\'' + item.DataPackageID + '\',\'' + item.MobileNumber + '\')">Edit</a><a href="javascript:;" onclick="delmsisd(\'' + item.ID + '\')" class="btn btn-danger mt-2">Delete</a></td></tr>';
+
+                });
+                $('#stutbl').empty().append(op);
+                Datatables();
+            },
+            failure: function (response) {
+                $('#result').html(response);
+            }
+        });
+        var local;
+    }
+
+    function Data(ID, EmployeePost, CNICNumber, OwnerName, Createddate, CreditLimit, VoicePackageName, DataPackage, EmployeeShift, Createby, EmployeeDesiginationID, VoicePackageID, DataPackageID, MobileNumber)
+    {
+        debugger
+        local = ID;
+        $('#EmployeeDesiginationID').val(EmployeeDesiginationID).trigger('change');
+        $("#CNIC").val(CNICNumber).trigger('change'); 
+        $("#OwnerName").val(OwnerName);
+        $("#CreditLimit").val(CreditLimit);
+        $('#DataPackage').val(DataPackageID).trigger('change');
+        $('#VoicePackage').val(VoicePackageID).trigger('change');
+        $("#EmployeeShift").val(EmployeeShift).trigger('change');
+        $("#MobileNumber").val(MobileNumber).trigger('change');
+        $("#Createby").val(Createby); 
+        $("#Createddate").val(Createddate);
+        $('#addupbtn').empty().text('Update');
+    }
+    function EditMSISD() {
+        var Msisdno = {};
+        debugger;
+        Msisdno.EmployeePost = $('#EmployeeDesiginationID option:selected').val();
+        Msisdno.CNICNumber = $("#CNIC").val(); 
+        Msisdno.OwnerName = $("#OwnerName").val(); 
+        Msisdno.CreditLimit = $("#CreditLimit").val();
+        Msisdno.DataPackage = $("#DataPackage").val();
+        Msisdno.MobileNumber = $('#MobileNumber option:selected').val(); 
+        Msisdno.VoicePackageName = $("#VoicePackage").val(); 
+        Msisdno.Createby = $('#Createby').val();
+        Msisdno.Createddate = $('#Createddate').val();
+        Msisdno.EmployeeShift = $("#EmployeeShift").val(); 
+        Msisdno.ID = local;
+        var data1 = JSON.stringify(Msisdno);
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            type: 'POST',
+            url: '/SimNewPartner/Edit',
+            data: data1,
+            success: function (response) {
+                var Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    progressBar: true,
+                    timer: 3000
+                });
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Number to partner Update Successfully..!'
+                })
+                RefreshPage();
+            },
+            failure: function (response) {
+                $('#result').html(response);
+            }
+        });
+
+
+    }
+    function Assignsimtopartnercampus()
+    {
+        var btn_name = $('#addupbtn').text();
+        if (btn_name == "Update") {
+            EditMSISD();
+        }
+        else {
+            var Msisdno = {};
+            Msisdno.EmployeePost = $('#EmployeeDesiginationID option:selected').val();
+            Msisdno.CNICNumber = $("#CNIC").val();
+            Msisdno.OwnerName = $("#OwnerName").val(); 
+            Msisdno.CreditLimit = $("#CreditLimit").val();
+            Msisdno.DataPackage = $('#DataPackage option:selected').val();
+            Msisdno.MobileNumber = $('#MobileNumber option:selected').val();
+            Msisdno.VoicePackageName = $('#VoicePackage option:selected').val();
+            Msisdno.Approvedby = $('#Approvedby').val();
+            Msisdno.EmployeeShift = $("#EmployeeShift").val();
+
+            Msisdno.ID = 0;
+            var data1 = JSON.stringify(Msisdno);
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: '/SimNewPartner/CreateSimNewPartner',
+                data: data1,
+                success: function (response) {
+                    var Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        progressBar: true,
+                        timer: 3000
+                    });
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Number To Partner Save Successfully..!'
+                    })
+                    RefreshPage();
+                },
+                failure: function (response) {
+                    $('#result').html(response);
+                }
+            });
+        }
+    }
+    function delmsisd(Id) {
+        debugger
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var Msisdno = {};
+                Msisdno.ID = Id;
+                var data1 = JSON.stringify(Msisdno);
+                debugger
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST',
+                    url: '/SimNewPartner/Delete',
+                    data: '{mSISDViewModel: ' + JSON.stringify(Msisdno) + '}',
+                    success: function (response) {
+
+                        Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
+                        RefreshPage();
+                    },
+                    failure: function (response) {
+                        $('#result').html(response);
+                    }
+                });
+            }
+        })
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

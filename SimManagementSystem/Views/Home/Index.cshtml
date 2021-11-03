@@ -1,0 +1,403 @@
+﻿@model SimManagementSystem.Models.TableLayout
+@using SimManagementSystem.CommonUtility
+@{
+    ViewBag.Title = "Home Page";
+    var Menulist = new WebHelper().GetUserIdentityFromSession().Check;
+    var isadmin = new WebHelper().GetUserIdentityFromSession().isAdmin;
+    var list = Menulist.Select(x => x.MenuId).ToList();
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Sim Dashboard</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Index</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-3">
+                <a href="#">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-id-card"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Total MSISD Number</span>
+                            <span class="info-box-number">
+                                <h5>@Model.msisdviewmodel.Count()</h5>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- /.col -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <a href="#">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-id-badge"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Total Assign MSISD Number</span>
+                            <span class="info-box-number"><h5>@Model.assignmsisdviewmodel.Count()</h5></span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                </a>
+            </div>
+            <!-- /.col -->
+            <!-- fix for small devices only -->
+            <div class="clearfix hidden-md-up"></div>
+
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-success elevation-1"><i class="fas fa-list"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Menus</span>
+                        <span class="info-box-number"><h5>@Model.AssignMenu.Count()</h5></span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-phone"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Mobile No.</span>
+                        <span class="info-box-number"><h5>@Model.Sims.Count()</h5></span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Mobile Network Report</h5>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="text-center">
+                                    <strong>Network Completion</strong>
+                                </p>
+                                <div class="progress-group">
+                                    Jazz Network
+                                    <span class="float-right"><b>@Model.Sims.Where(x => x.TelNetwork == "Jazz").Count()</b>&nbsp;Number</span>
+                                    <div class="progress progress-sm">
+                                        @{
+                                            var j = Model.Sims.Where(x => x.TelNetwork == "Jazz").Count();
+                                            <div class="progress-bar bg-primary" style="width:@j%"></div>
+                                        } 
+                                    </div>
+                                </div>
+                                <div class="progress-group">
+                                    Warid Network
+                                    <span class="float-right"><b>@Model.Sims.Where(x => x.TelNetwork == "Warid").Count()</b>&nbsp;Number</span>
+                                    <div class="progress progress-sm">
+                                        @{
+                                            var w = Model.Sims.Where(x => x.TelNetwork == "Warid").Count(); 
+                                            <div class="progress-bar bg-danger" style="width:@w%"></div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="progress-group">
+                                    Ufone Network
+                                    <span class="float-right"><b>@Model.Sims.Where(x => x.TelNetwork == "Ufone").Count()</b>&nbsp;Number</span>
+                                    <div class="progress progress-sm">
+                                        @{
+                                            var u = Model.Sims.Where(x => x.TelNetwork == "Ufone").Count();
+                                            <div class="progress-bar bg-success" style="width:@u%"></div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="progress-group">
+                                    Telenor Network
+                                    <span class="float-right"><b>@Model.Sims.Where(x => x.TelNetwork == "Telenor").Count()</b>&nbsp;Number</span>
+                                    <div class="progress progress-sm">
+                                        @{
+                                            var t = Model.Sims.Where(x => x.TelNetwork == "Telenor").Count();
+                                            <div class="progress-bar bg-warning" style="width:@t%"></div> 
+                                        }
+                                    </div>
+                                </div>
+                                <div class="progress-group">
+                                    Zong Network
+                                    <span class="float-right"><b>@Model.Sims.Where(x => x.TelNetwork == "Zong").Count()</b>&nbsp;Number</span>
+                                    <div class="progress progress-sm">
+                                        @{
+                                            var z = Model.Sims.Where(x => x.TelNetwork == "Zong").Count();
+                                            <div class="progress-bar bg-fuchsia" style="width:@z%"></div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Generic Info</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-footer p-0">
+                        <ul class="nav nav-pills flex-column">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    New Partner Approved Sim
+                                    <span class="float-right text-success">
+                                        <i class="fas fa-check-circle text-sm"></i>
+                                       @Model.assignedsimpartner.Where(x => x.Approvedby != "").Count()
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    New Partner Un-Approved Sim
+                                    <span class="float-right text-danger">
+                                        <i class="fas fa-times text-sm"></i> 
+                                        @Model.assignedsimpartner.Where(x => x.Approvedby == "").Count()
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    Total Voice Package
+                                    <span class="float-right text-info">
+                                        <i class="fas fa-microphone text-sm"></i> 
+                                        @Model.voicepackagenamemodel.Count()
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    Total Data Package
+                                    <span class="float-right text-blue">
+                                        <i class="fas fa-database text-sm"></i> 
+                                        @Model.datapackagenamemodel.Count()
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    
+                                    <span class="float-right text-success">
+                                        <i class="fas  text-sm"></i> 
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    
+                                    <span class="float-right text-success">
+                                        <i class="fas  text-sm"></i> 
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    
+                                    <span class="float-right text-success">
+                                        <i class="fas  text-sm"></i> 
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+
+                                    <span class="float-right text-success">
+                                        <i class="fas  text-sm"></i>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.footer -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Partner Campus  Sim Status</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Employee Post</th>
+                                    <th>CNIC Number</th>
+                                    <th>Owner Name</th>
+                                    <th>Credit Limit</th>
+                                    <th>Voice Package</th>
+                                    <th>Data Package</th>
+                                    <th>Employee Shift</th>
+                                    <th>Approved</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stutbl"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<style>
+    .textareas {
+        background-color: white !important;
+        border-color: black !important;
+    }
+</style>
+<script>
+    $(function () {
+        GetAssignsimList();
+        window.alert = function () { }
+        $('.select2').select2();
+    });
+    function GetAssignsimList() {
+        $.ajax({
+            type: 'GET',
+            url: '/SimNewPartner/GetData',
+            success: function (response) {
+                var op = '';
+                $.each(response, function (key, item) {
+                    op += '<tr><td>' + item.EmployeePost + '</td><td>' + item.CNICNumber + '</td><td>' + item.OwnerName + '</td><td>' + item.CreditLimit + '</td><td>' + item.VoicePackageName + '</td><td>' + item.DataPackage + '</td><td>' + item.EmployeeShift + '</td><td>' + item.Approvedby + '</td><td>' + item.Remarks + '</td>';
+
+
+                });
+                $('#stutbl').empty().append(op);
+                Datatables();
+
+            },
+            failure: function (response) {
+                $('#result').html(response);
+            }
+        });
+        var local;
+    }
+
+    function approvedassignsim(ID) {
+
+        debugger
+        var text = Swal.fire({
+            input: 'textarea',
+            inputLabel: 'Remarks',
+            inputPlaceholder: 'Type your Remarks here...',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            closeOnConfirm: true,
+            customClass: 'textareas',
+        }).then((result) => {
+            if (result.isConfirmed)
+            {
+                var val = result.value;
+                var Msisdno = {};
+                Msisdno.ID = ID;
+                Msisdno.Remarks = val;
+                var data1 = JSON.stringify(Msisdno);
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST',
+                    url: '/SimNewPartner/ApprovedAssignSim',
+                    data: '{mSISDViewModel: ' + JSON.stringify(Msisdno) + '}',
+                    success: function (response)
+                    {
+                        var Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            progressBar: true,
+                            timer: 3000
+                        });
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Assign Number Approved Successfully..!'
+                        })
+                        RefreshPage();
+                    },
+                    failure: function (response) {
+                        $('#result').html(response);
+                    }
+                });
+            }
+        })
+    }
+    function unapprovedassignsim(ID) {
+        var Msisdno = {};
+        Msisdno.ID = ID;
+        Msisdno.Remarks = "";
+        var data1 = JSON.stringify(Msisdno);
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            type: 'POST',
+            url: '/SimNewPartner/UnApprovedAssignSim',
+            data: '{mSISDViewModel: ' + JSON.stringify(Msisdno) + '}',
+            success: function (response) {
+                var Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    progressBar: true,
+                    timer: 3000
+                });
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Assign Number Un-Approved Successfully..!'
+                })
+                RefreshPage();
+            },
+            failure: function (response) {
+                $('#result').html(response);
+            }
+        });
+    }
+</script>
+

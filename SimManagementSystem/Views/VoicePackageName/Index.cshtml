@@ -1,0 +1,279 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">Voice Package Info</h3>
+                <div class="card-tools">
+                    <h6 class="text-success" id="msg" style="display:none"></h6>
+                </div>
+            </div>
+           
+          
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>All Network Mints&nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <input type="hidden" class="form-control" id="VPN_ID" name="VPN_ID" />
+                            <input type="hidden" class="form-control" id="AddedBy" name="AddedBy" />
+                            <input type="hidden" class="form-control" id="AddedDate" name="AddedDate" />
+                            <input type="text" class="form-control" id="All_Network_Mints" name="All_Network_Mints" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>All Network SMS &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <input type="text" class="form-control" id="All_Network_SMS" name="All_Network_SMS"  onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"/>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>All Net Data  &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <input type="text" class="form-control" id="All_Net_Data" name="All_Net_Data" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"/>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>On Network Mints  &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <input type="text" class="form-control" id="Other_Network_Mints" name="Other_Network_Mints" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"/>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Package Description   &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <input type="text" class="form-control" id="Package_Description" name="Package_Description" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Package Tax Description   &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <input type="text" class="form-control" id="Package_Tax_Description" name="Package_Tax_Description" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="form-group" style="padding-top: 22px;">
+                            <label></label>
+                            <button class="btn btn-success mt-2" id="addupbtn" onclick="CheckValidation()">Add Voice Package</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+    </div>
+</section>
+<br />
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Voice Package List</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>All Network Mints </th>
+                                    <th>All Network SMS </th>
+                                    <th>All Net Data </th>
+                                    <th>On Network Mints </th>
+                                    <th>Package Description </th>
+                                    <th>Package Tax Description  </th>
+                                    <th>Added By</th>
+                                    <th>Added Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stutbl"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(function () {
+        GetVoicePackageList();
+        window.alert = function () {  }
+    });
+    function GetVoicePackageList()
+    {
+        $.ajax({
+            type: 'GET',
+            url: '/VoicePackageName/GetVoicePackageName',
+            success: function (response) {
+                var op = '';
+                $.each(response, function (key, item) {
+                    op += '<tr><td>' + item.All_Network_Mints + '</td><td>' + item.All_Network_SMS + '</td><td>' + item.All_Net_Data + '</td><td>' + item.Other_Network_Mints + '</td><td>' + item.Package_Description + '</td><td>' + item.Package_Tax_Description + '</td> <td>' + item.AddedBy + '</td><td>' + item.AddedDate + '</td>';
+                    op += '<td><a href="javascript:;"  class="btn btn-info mt-2" onclick="EditVoicePackage(\'' + item.VPN_ID + '\',\'' + item.All_Network_SMS + '\',\'' + item.All_Network_Mints + '\',\'' + item.All_Net_Data + '\',\'' + item.Other_Network_Mints + '\',\'' + item.Package_Description + '\',\'' + item.Package_Tax_Description + '\',\'' + item.AddedBy + '\',\'' + item.AddedDate + '\')">Edit</a><a href="javascript:;" onclick="delvOICEpACKAGE(\'' + item.VPN_ID + '\')" class="btn btn-danger mt-2">Delete</a></td></tr>';
+                });
+                $('#stutbl').empty().append(op);
+                Datatables();
+                debugger
+            },
+            failure: function (response) {
+                $('#result').html(response);
+            }
+        });
+    }
+    function EditVoicePackage(VPN_ID, All_Network_SMS, All_Network_Mints, All_Net_Data, Other_Network_Mints, Package_Description, Package_Tax_Description, AddedBy, AddedDate)
+    {
+        debugger
+        $('#VPN_ID').val(VPN_ID);
+        $('#All_Network_Mints').val(All_Network_Mints);
+        $('#All_Network_SMS').val(All_Network_SMS);
+        $('#All_Net_Data').val(All_Net_Data);
+        $('#Other_Network_Mints').val(Other_Network_Mints);
+        $('#Package_Description').val(Package_Description);
+        $('#Package_Tax_Description').val(Package_Tax_Description);
+        $('#AddedBy').val(AddedBy);
+        $('#AddedDate').val(AddedDate);
+        $('#addupbtn').empty().text('Update');
+    }
+    function CheckValidation()
+    {
+        if ($('#Package_Tax_Description').val() == "" || $('#Package_Description').val() == "" || $('#All_Network_SMS').val() == "" || $('#All_Net_Data').val() == "" || $('#All_Network_Mints').val() == "" || $('#Other_Network_Mints').val() == "")
+            {
+            toastr.error('Required Fields are Mandatory...!')
+            } 
+            else
+             {
+            AddVoicePackage(); 
+            }
+        
+    }
+                function AddVoicePackage()
+                {
+            var btn_name = $('#addupbtn').text();
+            if (btn_name == "Update") {
+                var VoicePackage = {};
+                VoicePackage.VPN_ID = $('#VPN_ID').val();
+                VoicePackage.All_Network_Mints =        $('#All_Network_Mints').val();
+                VoicePackage.All_Network_SMS =          $('#All_Network_SMS').val();
+                VoicePackage.All_Net_Data  =            $('#All_Net_Data').val();
+                VoicePackage.Other_Network_Mints =      $('#Other_Network_Mints').val();
+                VoicePackage.Package_Description  =     $('#Package_Description ').val();
+                VoicePackage.Package_Tax_Description  = $('#Package_Tax_Description ').val();
+                VoicePackage.AddedBy =                  $('#AddedBy').val(); 
+                VoicePackage.AddedDate =                $('#AddedDate').val();
+                var data1 = JSON.stringify(VoicePackage);
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST',
+                    url: '/VoicePackageName/Edit',
+                    data: data1,
+                    success: function (response) { 
+                        var Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            progressBar: true,
+                            timer: 3000
+                        });
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'VoicePackageName Update Successfully..!'
+                        })
+                        $('#addupbtn').empty().text('Add Voice Package Name');
+                        RefreshPage();
+                    },
+                    failure: function (response) {
+                        $('#result').html(response);
+                    }
+                });
+            }
+           else {
+                VoicePackage = {};
+              
+                VoicePackage.All_Network_Mints = $('#All_Network_Mints').val();
+                VoicePackage.All_Network_SMS = $('#All_Network_SMS').val();
+                VoicePackage.All_Net_Data = $('#All_Net_Data').val();
+                VoicePackage.Other_Network_Mints = $('#Other_Network_Mints').val();
+                VoicePackage.Package_Description = $('#Package_Description').val();
+                VoicePackage.Package_Tax_Description = $('#Package_Tax_Description').val();
+                    VoicePackage.AddedBy = $('#AddedBy').val();
+                    VoicePackage.AddedDate = $('#AddedDate').val();
+               
+                var data1 = JSON.stringify(VoicePackage);
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST',
+                    url: '/VoicePackageName/Create',
+                    data: data1,
+                    success: function (response) {
+                        var Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            progressBar: true,
+                            timer: 3000
+                        });
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'VoicePackageName Save Successfully..!'
+                        })
+                        RefreshPage();
+                    },
+                    failure: function (response) {
+                        $('#result').html(response);
+                    }
+                });
+            }
+      }
+                function delvOICEpACKAGE(VPN_ID) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var Msisdno = {};
+                Msisdno.VPN_ID = VPN_ID; 
+                var data1 = JSON.stringify(Msisdno);
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST', 
+                    url: '/VoicePackageName/Delete',
+                    data: data1,
+                    success: function (response) {
+                        Swal.fire('Deleted!','Your file has been deleted.','success')
+                        RefreshPage();
+                    },
+                    failure: function (response) {
+                        $('#result').html(response);
+                    }
+                });
+            }
+        })
+    }
+
+
+
+
+</script>
