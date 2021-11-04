@@ -1,8 +1,9 @@
 ﻿@using SimManagementSystem.CommonUtility 
 @{ 
     var Menulist = new WebHelper().GetUserIdentityFromSession().Check;
+    var Userinfo = new WebHelper().GetUserIdentityFromSession();
     bool isadmin = new WebHelper().GetUserIdentityFromSession().isAdmin;
-    var list = Menulist.Select(x => x.MenuId).ToList(); 
+    var list = Menulist.Select(x => x.MenuId).ToList();
 }
 <!DOCTYPE html>
 <html lang="en"> 
@@ -63,14 +64,26 @@
             <div class="sidebar">
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     @{
-                        if (Session["userid"] != null)
+                        if (Userinfo.UserId != null)
                         {
-                            <div class="image">
-                                <img src='@Url.Action("GetEmployeePicture", "Home", new { EmpID = Session["userid"].ToString() })' class="img-circle elevation-2" alt="User Image">
-                            </div>
-                            <div class="info">
-                                <a href="#" class="d-block">@Session["name"].ToString()</a>
-                            </div>
+                            if (Userinfo.UserId== 786786)
+                            {
+                                <div class="image">
+                                    <img src='~/AdminTemplate/dist/img/user2-160x160.jpg' class="img-circle elevation-2" alt="User Image">
+                                </div>
+                                <div class="info">
+                                    <a href="#" class="d-block">@Userinfo.Name.ToString()</a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="image">
+                                    <img src='@Url.Action("GetEmployeePicture", "Home", new { EmpID = Userinfo.UserId })' class="img-circle elevation-2" alt="User Image">
+                                </div>
+                                <div class="info">
+                                    <a href="#" class="d-block">@Userinfo.Name.ToString()</a>
+                                </div>
+                            }
                         }
                         else
                         {
