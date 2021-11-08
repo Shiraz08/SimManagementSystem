@@ -16,12 +16,13 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-
                         <div class="form-group">
-                             <label for="customFile">File&nbsp;<span style="color:red!important"><b>*</b></span></label>  
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input"  id="fileUpload" name="fileUpload">
-                                <label class="custom-file-label" for="customFile">Choose file</label>
+                            <label for="fileUpload">File&nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="fileUpload" name="fileUpload">
+                                    <label class="custom-file-label" for="fileUpload">Choose file</label>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -86,7 +87,6 @@
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Sn.</th>
                                     <th>User Name</th>
                                     <th >Designation</th>
                                     <th>Campus/Department</th>
@@ -126,7 +126,7 @@
             success: function (response) {
                 var op = '';
                 $.each(response, function (key, item) {
-                    op += '<tr><td>' + item.Sn + '</td><td>' + item.UserName + '</td><td>' + item.Designation + '</td><td>' + item.Campus_Department + '</td><td>' + item.SimNumber + '</td><td>' + item.UGILimit + '</td><td>' + item.TotalAmount + '</td><td>' + item.PayableByUGI + '</td><td>' + item.Arears + '</td><td>' + item.Months + '</td><td>' + item.Years + '</td><td>' + item.Createby + '</td><td>' + item.Createddate + '</td>';
+                    op += '<tr><td>' + item.UserName + '</td><td>' + item.Designation + '</td><td>' + item.Campus_Department + '</td><td>' + item.SimNumber + '</td><td>' + item.UGILimit + '</td><td>' + item.TotalAmount + '</td><td>' + item.PayableByUGI + '</td><td>' + item.Arears + '</td><td>' + item.Months + '</td><td>' + item.Years + '</td><td>' + item.Createby + '</td><td>' + item.Createddate + '</td>';
                     op += '<td><a href="javascript:;" onclick="DeleteBillingAmount(\'' + item.BillingId + '\')" class="btn btn-danger mt-2">Delete</a></td></tr>';
                 });
                 $('#stutbl').empty().append(op);
@@ -150,12 +150,11 @@
     }
     function ImportBillingFiles()
     {
-        //Reference the FileUpload element. 
         var fileUpload = $("#fileUpload")[0];
-        //Validate whether File is valid Excel file.
         var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx|.xlsm|.csv)$/;
         if (regex.test(fileUpload.value.toLowerCase())) {
-            if (typeof (FileReader) != "undefined") {
+            if (typeof (FileReader) != "undefined")
+            {
                 var reader = new FileReader();
 
                 //For Browsers other than IE.
@@ -176,12 +175,15 @@
                     };
                     reader.readAsArrayBuffer(fileUpload.files[0]);
                 }
-            } else {
-                alert("This browser does not support HTML5.");
-               
             }
-        } else {
-            alert("Please upload a valid Excel file.");
+            else
+            {
+                toastr.error('This browser does not support HTML5.....!');
+            }
+        }
+        else
+        {
+            toastr.error('Please upload a valid Excel file....!');
         }
     }
     function ProcessExcel(data) {
@@ -219,16 +221,27 @@
             function (data, status)
             {
                 $('#fileUpload').val('');
+                $('#upload').prop('disabled', false);
+                var Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    progressBar: true,
+                    timer: 3000
+                });
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Selected File Data Save Successfully in Database..!'
+                })
                 setTimeout(function () {
-                    $('#upload').prop('disabled', false);
-                }, 1000);
-                RefreshPage();
+                    RefreshPage();
+                }, 2000);
             }
             , function () {
-                console.log('this will run if  fails');
+                toastr.error('This will run if  fails.....!');
             }
             , function () {
-                console.log('this will run if the deferred generates a progress update');
+                toastr.error('This will run if the deferred generates a progress update.....!');
             });
     };
     function AjaxGenericMethod(method, controller, dataToPost)
@@ -241,7 +254,7 @@
             return $.ajax({
                 type: "POST",
                 url: url,
-                async: false,
+                //async: false,
                 data: dataToPost,
                 cache: false,
                 error: function (data, status)

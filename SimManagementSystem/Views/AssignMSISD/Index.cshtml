@@ -15,30 +15,13 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>IT Reference No &nbsp;<span style="color:red!important"><b>*</b></span></label>
-                            <input type="hidden" class="form-control" id="ID" name="ID" />
-                            <input type="hidden" class="form-control" id="Added_By" name="Added_By" />
-                            <input type="hidden" class="form-control" id="Added_Date" name="Added_Date" />
-                            <input type="text" class="form-control" id="IT_Reference_No" name="IT_Reference_No" />
-                        </div>
-                        <div class="form-group">
-                            <label>Mobile Network &nbsp;<span style="color:red!important"><b>*</b></span></label>
-                            <select name="Mobile_Network" id="Mobile_Network" class="form-control select2" style="width: 100%;">
-                                <option value="">Select Mobile Network</option>
-                                <option value="Jazz">Jazz</option>
-                                <option value="Ufone">Ufone</option>
-                                <option value="Zong">Zong</option>
-                                <option value="Telenor">Telenor</option>
-                                <option value="Warid">Warid</option>
-                            </select>
-                        </div>
-                    </div>
+                    <input type="hidden" class="form-control" id="ID" name="ID" />
+                    <input type="hidden" class="form-control" id="Added_By" name="Added_By" />
+                    <input type="hidden" class="form-control" id="Added_Date" name="Added_Date" />
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Sim MSISD No &nbsp;<span style="color:red!important"><b>*</b></span></label>
-                            <select id="Sim_MSISD_No" name="Sim_MSISD_No" class="form-control select2" style="width: 100%;">
+                            <select id="Sim_MSISD_No" name="Sim_MSISD_No" class="form-control select2" style="width: 100%;" onchange="getmobilenetwork();">
                                 @if (ViewBag.msisd != null)
                                 {
                                     <option value="">Select MSISD No.</option>
@@ -53,7 +36,23 @@
                                     }
                                 }
                             </select>
-
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile Network &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <select name="Mobile_Network" id="Mobile_Network" class="form-control select2" style="width: 100%;" >
+                                <option value="">Select Mobile Network</option>
+                                <option value="Jazz">Jazz</option>
+                                <option value="Ufone">Ufone</option>
+                                <option value="Zong">Zong</option>
+                                <option value="Telenor">Telenor</option>
+                                <option value="Warid">Warid</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>IT Reference No &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <input type="text" class="form-control" id="IT_Reference_No" name="IT_Reference_No" />
                         </div>
                         <div class="form-group">
                             <label>Mobile Number &nbsp;<span style="color:red!important"><b>*</b></span></label>
@@ -112,6 +111,25 @@
         window.alert = function () { }
         $('.select2').select2();
     });
+    function getmobilenetwork()
+    {
+
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            type: 'GET',
+            url: '/AssignMSISD/GetNetworkNamebynumber',
+            data: { MSISNO: $('#Sim_MSISD_No :selected').val() },
+            success: function (response)
+            {
+                $("#Mobile_Network").val(response.network).trigger('change');
+                $("#IT_Reference_No").val(response.it_reference); 
+            },
+            failure: function (response) {
+                $('#result').html(response);
+            }
+        });
+    }
     function GetMSISDList() {
         $.ajax({
             type: 'GET',
@@ -130,30 +148,17 @@
             }
         });
     }
-
-
-
-      function CheckValidation()
+    function CheckValidation()
       {
-          var letterNumber = /^[0-9a-zA-Z]+$/;
-          if ($('#IT_Reference_No').val().match(letterNumber))
-          {
+
               if ($('#Mobile_Network :selected').val() == "" || $('#IT_Reference_No').val() == "" || $('#Mobile_Number').val() == "" || $('#Sim_MSISD_No :selected').val() == "") {
                   toastr.error('Required Fields are Mandatory...!')
               }
-              else {
+              else 
+              {
                   AssignMSISD();
               }
-          }
-          else {
-              toastr.error('It reference number contain only text and number...!')
-          }
-
     }
-
-
-
-
     function AssignMSISD() {
         var btn_name = $('#addupbtn').text();
         if (btn_name == "Update")

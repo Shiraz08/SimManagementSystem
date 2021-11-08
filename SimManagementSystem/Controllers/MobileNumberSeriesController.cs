@@ -14,6 +14,8 @@ namespace SimManagementSystem.Controllers
     {
         MobileNumberSeriesDAL simDAL = new MobileNumberSeriesDAL();
         WebHelper web = new WebHelper();
+        UserViewModel user = new UserViewModel();
+        UserDAL userDal = new UserDAL();
         [HttpPost]
         public JsonResult Delete(SimInfo mSISDViewModel)
         {
@@ -46,6 +48,15 @@ namespace SimManagementSystem.Controllers
         public ActionResult GetSim()
         {
             return View();
+        }
+        public JsonResult Updatemsisdno(SimInfo local)
+        {
+            user = new WebHelper().GetUserIdentityFromSession();
+            EmployeeDetailVM resModel = userDal.GetEmployeeImage(user.UserId);
+            local.ModifiedBy = user.Name; 
+            local.ModifiedDate = DateTime.Now;
+            simDAL.UpdateMSISD(local); 
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
     }
 }

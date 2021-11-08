@@ -25,6 +25,7 @@ namespace SimManagementSystem.Models
         public long CountNumber { get; set; }
 
         public string CreatedBy { get; set; }
+        public string Sim_MSISD_No { get; set; }
 
         public DateTime CreatedTime { get; set; }
 

@@ -2290,6 +2290,7 @@
     <Content Include="Views\Shared\_AdminMenu.cshtml" />
     <Content Include="Views\Shared\_EmployeeMenu.cshtml" />
     <Content Include="Views\Billing\Index.cshtml" />
+    <Content Include="Views\Billing\Addmanualbilling.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

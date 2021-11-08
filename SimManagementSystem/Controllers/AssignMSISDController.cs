@@ -58,5 +58,12 @@ namespace SimManagementSystem.Controllers
             db.DeleteMSISD(mSISDViewModel.ID);
             return Json(true, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult GetNetworkNamebynumber(string MSISNO)
+        {
+            var network = dbs.GetMSISD().Where(x => x.Sim_MSISD_No == MSISNO).Select(x => x.Mobile_Network).FirstOrDefault();
+            var it_reference = dbs.GetMSISD().Where(x => x.Sim_MSISD_No == MSISNO).Select(x => x.IT_Reference_No).FirstOrDefault();
+            var response = new { network = network, it_reference = it_reference };
+            return Json(response, JsonRequestBehavior.AllowGet);  
+        }
     }
 }

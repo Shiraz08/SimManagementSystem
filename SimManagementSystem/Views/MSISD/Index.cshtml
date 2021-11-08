@@ -110,8 +110,6 @@
     }
     function CheckValidation()
     {
-        var letterNumber = /^[0-9a-zA-Z]+$/;
-        if ($('#IT_Reference_No').val().match(letterNumber)) {
             if ($('#Mobile_Network :selected').val() == "" || $('#IT_Reference_No').val() == "" || $('#Sim_MSISD_No').val() == "")
             {
                 toastr.error('Required Fields are Mandatory...!')
@@ -119,11 +117,6 @@
             else {
                 AddMSISD();
             }
-        }
-        else
-        {
-            toastr.error('It reference number contain only text and number...!')
-        }
     }
     function AddMSISD()
     {

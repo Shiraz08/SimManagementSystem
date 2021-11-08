@@ -1,0 +1,303 @@
+﻿
+@{
+    ViewBag.Title = "Addmanualbilling";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title"> Billing Info</h3>
+                <div class="card-tools">
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Department &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <select id="Campus_Department" name="Campus_Department" class="form-control select2" style="width: 100%;">
+                                @if (ViewBag.Department != null)
+                                {
+                                    <option value="">Select Department</option>
+                                    foreach (var item in ViewBag.Department)
+                                    {
+                                        if (item.Text != null)
+                                        {
+                                            <option value="@item.Value">
+                                                @item.Text
+                                            </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Campus &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <select id="CampusID" name="CampusID" class="form-control select2" style="width: 100%;">
+                                @if (ViewBag.Campus != null)
+                                {
+                                    <option value="">Select Campus</option>
+                                    foreach (var item in ViewBag.Campus)
+                                    {
+                                        if (item.Text != null)
+                                        {
+                                            <option value="@item.Value">
+                                                @item.Text
+                                            </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Designation &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <select id="Designation" name="Designation" class="form-control select2" style="width: 100%;" >
+                                @if (ViewBag.Designation != null)
+                                {
+                                    <option value="">Select Designation</option>
+                                    foreach (var item in ViewBag.Designation)
+                                    {
+                                        if (item.Text != null)
+                                        {
+                                            <option value="@item.Value">
+                                                @item.Text
+                                            </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Sim Number &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <input type="text" class="form-control" id="SimNumber" name="SimNumber" /> 
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>UGI Limit &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <input type="text" class="form-control" id="UGILimit" name="UGILimit" />
+                        </div>
+                        <div class="form-group">
+                            <label>Total Amount &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <input type="text" class="form-control" id="TotalAmount" name="TotalAmount" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Arears &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <input type="text" class="form-control" id="Arears" name="Arears" />
+                        </div>
+                        <div class="form-group">
+                            <label>User Name &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <input type="text" class="form-control" id="UserName" name="UserName" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Month &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <select id="Months" name="Months" class="form-control select2" style="width: 100%;">
+                                @if (ViewBag.Months != null)
+                                {
+                                    <option value="">Please Select Month..</option>
+                                    foreach (var item in ViewBag.Months)
+                                    {
+                                        if (item.Text != null)
+                                        {
+                                            <option value="@item.Value">
+                                                @item.Text
+                                            </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Year &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <select id="Years" name="Years" class="form-control select2" style="width: 100%;">
+                                @if (ViewBag.Years != null)
+                                {
+                                    <option value="">Please Select Years..</option>
+                                    foreach (var item in ViewBag.Years)
+                                    {
+                                        if (item.Text != null)
+                                        {
+                                            <option value="@item.Value">
+                                                @item.Text
+                                            </option>
+                                        }
+                                    }
+                                }
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Payable By UGI &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <input type="text" class="form-control" id="PayableByUGI" name="PayableByUGI" />
+                        </div>
+                        <div class="form-group right" style="padding-top: 22px;">
+                            <label></label>
+                            <button class="btn btn-success mt-2" id="upload" onclick="CheckValidation();">Add Billing</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<br />
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Billing Amount List</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>User Name</th>
+                                    <th>Designation</th>
+                                    <th>Campus/Department</th>
+                                    <th>Sim Number</th>
+                                    <th>UGI Limit</th>
+                                    <th>Total Amount</th>
+                                    <th>Payable By UGI</th>
+                                    <th>Arears</th>
+                                    <th>Month</th>
+                                    <th>Year</th>
+                                    <th>Created By</th>
+                                    <th>Created Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stutbl"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
+<script>
+    $(function () {
+        GetBillingList();
+        window.alert = function () { }
+        $('.select2').select2();
+    });
+    function GetBillingList()
+    {
+        $.ajax({
+            type: 'GET',
+            url: '/Billing/GetBillingAmount',
+            success: function (response) {
+                var op = '';
+                $.each(response, function (key, item) {
+                    op += '<tr><td>' + item.UserName + '</td><td>' + item.Designation + '</td><td>' + item.Campus_Department + '</td><td>' + item.SimNumber + '</td><td>' + item.UGILimit + '</td><td>' + item.TotalAmount + '</td><td>' + item.PayableByUGI + '</td><td>' + item.Arears + '</td><td>' + item.Months + '</td><td>' + item.Years + '</td><td>' + item.Createby + '</td><td>' + item.Createddate + '</td>';
+                    op += '<td><a href="javascript:;" onclick="DeleteBillingAmount(\'' + item.BillingId + '\')" class="btn btn-danger mt-2">Delete</a></td></tr>';
+                });
+                $('#stutbl').empty().append(op);
+                Datatables();
+            },
+            failure: function (response) {
+                $('#result').html(response);
+            }
+        });
+    }
+    function CheckValidation()
+    {
+        if ($('#Months :selected').val() == "" || $('#Years :selected').val() == "" || $('#fileUpload').val() == "")
+        {
+            toastr.error('Required Fields are Mandatory...!')
+        }
+        else
+        {
+            Addmanualbillings(); 
+        }
+    }
+    function Addmanualbillings() {
+            var Msisdno = {};
+            Msisdno.Campus_Department = $('#Campus_Department :selected').text() +  ' ' + $('#CampusID :selected').text();
+            Msisdno.Designation = $('#Designation :selected').text();
+            Msisdno.SimNumber = $('#SimNumber').val();
+            Msisdno.UGILimit = $('#UGILimit').val();
+            Msisdno.TotalAmount = $('#TotalAmount').val();
+            Msisdno.PayableByUGI = $('#PayableByUGI').val();
+            Msisdno.Arears = $('#Arears').val();
+            Msisdno.UserName = $('#UserName').val();
+            Msisdno.Months = $('#Months').val();
+            Msisdno.Years = $('#Years').val();
+
+            var data1 = JSON.stringify(Msisdno);
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST', 
+                url: '/Billing/SaveManualBilling',
+                data: data1,
+                success: function (response) {
+                    var Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        progressBar: true,
+                        timer: 3000
+                    });
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Manual Billing Save Successfully..!'
+                    })
+                    RefreshPage();
+                },
+                failure: function (response) {
+                    $('#result').html(response);
+                }
+            });
+        
+    }
+    function DeleteBillingAmount(BillingId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var Msisdno = {};
+                Msisdno.BillingId = BillingId;
+                var data1 = JSON.stringify(Msisdno);
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST',
+                    url: '/Billing/Delete',
+                    data: data1,
+                    success: function (response) {
+                        Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
+                        RefreshPage();
+                    },
+                    failure: function (response) {
+                        $('#result').html(response);
+                    }
+                });
+            }
+        })
+    }
+</script>
+
+
+
+

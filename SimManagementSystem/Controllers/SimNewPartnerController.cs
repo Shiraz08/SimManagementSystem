@@ -22,8 +22,8 @@ namespace SimManagementSystem.Controllers
         SimMobileIssuanceDAL desigantion = new SimMobileIssuanceDAL();
         public ActionResult Index()
         {
-            ViewBag.VoicePackageName = dal.GetVoicePackageName().Select(x => new SelectListItem { Text = x.All_Network_Mints.ToString() + " " + ">" + " " + x.All_Network_SMS + " " + ">" + " " + x.All_Net_Data + " " + ">" + " " + x.Package_Description, Value = x.VPN_ID.ToString() }).Distinct().ToList();
-            ViewBag.DataPackageName = dal.GetDataPackageName().Select(x => new SelectListItem { Text = x.DP_Description.ToString() + " " + ">" + " " + x.DP_GB_Type + " " + ">" + " " +  x.DP_Price, Value = x.DP_ID.ToString() }).Distinct().ToList();
+            ViewBag.VoicePackageName = dal.GetVoicePackageName().Select(x => new SelectListItem { Text = x.Package_Description + " " + ">" + " " + x.Package_Tax_Description, Value = x.VPN_ID.ToString() }).Distinct().ToList();
+            ViewBag.DataPackageName = dal.GetDataPackageName().Select(x => new SelectListItem { Text = x.DP_Description.ToString(), Value = x.DP_ID.ToString() }).Distinct().ToList();
             ViewBag.Designation = desigantion.GetDesignation().Select(x => new SelectListItem { Text = x.Designationname.ToString(), Value = x.Designationid.ToString() }).Distinct().ToList();
             ViewBag.MobileNumber = m.GetMobileNumber().Select(x => new SelectListItem { Text = x.MobileNumber.ToString(), Value = x.MobileNumber.ToString() }).Distinct().ToList();
             return View(); 

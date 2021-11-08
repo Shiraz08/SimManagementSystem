@@ -23,13 +23,13 @@ namespace SimManagementSystem.Controllers
         }
         public ActionResult AddSimMobileIssuance()
         {
-            ViewBag.VoicePackageName = dal.GetVoicePackageName().Select(x => new SelectListItem { Text = x.All_Network_Mints.ToString() + " " + ">" + " " + x.All_Network_SMS + " " + ">" + " " + x.All_Net_Data + " " + ">" + " " + x.Package_Description, Value = x.VPN_ID.ToString() }).Distinct().ToList();
-            ViewBag.DataPackageName = dal.GetDataPackageName().Select(x => new SelectListItem { Text = x.DP_Description.ToString() + " " + ">" + " " + x.DP_GB_Type + " " + ">" + " " + x.DP_Price, Value = x.DP_ID.ToString() }).Distinct().ToList();
+            ViewBag.VoicePackageName = dal.GetVoicePackageName().Select(x => new SelectListItem { Text =  x.Package_Description + " " + ">" + " " + x.Package_Tax_Description, Value = x.VPN_ID.ToString() }).Distinct().ToList();
+            ViewBag.DataPackageName = dal.GetDataPackageName().Select(x => new SelectListItem { Text = x.DP_Description.ToString() , Value = x.DP_ID.ToString() }).Distinct().ToList();
             ViewBag.BType = db.GetBType().Select(x => new SelectListItem { Text = x.Btype_Name.ToString(), Value = x.ID.ToString() }).Distinct().ToList();
             ViewBag.MobileNumber = db.GetMobileNumber().Select(x => new SelectListItem { Text = x.MobileNumber.ToString(), Value = x.MobileNumber.ToString() }).Distinct().ToList();
             ViewBag.Department = db.GetDepartment().Select(x => new SelectListItem { Text = x.Description.ToString(), Value = x.DepttID.ToString() }).Distinct().ToList();
             ViewBag.Campus = db.GetCampus().Select(x => new SelectListItem { Text = x.campusname.ToString(), Value = x.id.ToString() }).Distinct().ToList();
-            ViewBag.EmployeeInfo = db.GetEmployeeInfo().Select(x => new SelectListItem { Text = x.EmployeeName.ToString(), Value = x.EMPID.ToString() }).Distinct().ToList();
+            ViewBag.EmployeeInfo = db.GetEmployeeInfo().Select(x => new SelectListItem { Text = x.EmployeeName.ToString() + " " + "-" + " " + x.EMPID.ToString(), Value = x.EMPID.ToString() }).Distinct().ToList();
             return View();
         }
         public ActionResult ReturnSim()

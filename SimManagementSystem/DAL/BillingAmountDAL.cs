@@ -40,10 +40,10 @@ namespace SimManagementSystem.DAL
                 using (AdoHelper objAdo = new AdoHelper())
                 {
                     SqlParameter[] parameters =  {
-                        new SqlParameter("@Sn", vm.Sn),
+                        new SqlParameter("@Sn", 1),
                         new SqlParameter("@UserName", vm.UserName),
-                        new SqlParameter("@Designation", vm.Designation),
-                        new SqlParameter("@Campus_Department", vm.Campus_Department),
+                        new SqlParameter("@Designation", vm.Designation.Trim()),
+                        new SqlParameter("@Campus_Department", vm.Campus_Department.Trim()),
                         new SqlParameter("@SimNumber", vm.SimNumber),
                         new SqlParameter("@UGILimit", vm.UGILimit),
                         new SqlParameter("@TotalAmount", vm.TotalAmount),

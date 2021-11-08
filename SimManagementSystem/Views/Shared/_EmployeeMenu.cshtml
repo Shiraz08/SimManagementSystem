@@ -203,10 +203,19 @@
                         <li class="nav-item">
                             <a href="@Url.Action("Index","Billing")" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Add Billing Amount</p>
+                                <p>Import Billing Amount</p>
                             </a>
                         </li>
-                    } 
+                    }
+                    if (list.Contains(12))
+                    {
+                        <li class="nav-item">
+                            <a href="@Url.Action("Addmanualbilling","Billing")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add Manual Billing</p>
+                            </a>
+                        </li>
+                    }
                 }
             </ul>
         </li>

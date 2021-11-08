@@ -73,6 +73,7 @@
                                     <th>IT Reference No</th>
                                     <th>Mobile Network</th>
                                     <th>Number</th>
+                                    <th>MSISD No.</th>
                                     <th>Added By</th>
                                     <th>Added Date</th>
                                     <th>Action</th>
@@ -109,11 +110,6 @@
             }
     }
 
-
-
-
-
-
     function GetSimList()
     {
         $.ajax({
@@ -123,8 +119,8 @@
                 debugger
                 var op = '';
                 $.each(response, function (key, item) {
-                    op += '<tr>' + '<td>' + item.ItNumberReference + '</td><td>' + item.TelNetwork + '</td><td>' + item.TelNumber + '</td><td>' + item.CreatedBy + '</td><td>' + item.Modifieddates + '</td>';
-                    op += '<td><a href="javascript:;" onclick="delmsisd(\'' + item.ID + '\')" class="btn btn-danger mt-2">Delete</a></td></tr>';
+                    op += '<tr>' + '<td>' + item.ItNumberReference + '</td><td>' + item.TelNetwork + '</td><td>' + item.TelNumber + '</td><td>' +  item.Sim_MSISD_No + '</td><td>' + item.CreatedBy + '</td><td>' + item.Modifieddates + '</td>';
+                    op += '<td><a href="javascript:;" onclick="delmsisd(\'' + item.ID + '\')" class="btn btn-danger mt-2">Delete</a><a href="javascript:;" onclick="updatemsisdno(\'' + item.ID + '\')" class="btn btn-info mt-2">Update MSISD No.</a></td></tr>';
                 });
                 $('#tblasignnumber').empty().append(op);
                 Datatables();
@@ -134,7 +130,54 @@
             }
         });
     }
-    function AssignMSISD() {
+
+    function updatemsisdno(ID) {
+
+        debugger
+        var text = Swal.fire({
+            input: 'textarea',
+            inputLabel: 'MSISD Number',
+            inputPlaceholder: 'Enter MSISD Number here...',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            closeOnConfirm: true,
+            customClass: 'textareas',
+        }).then((result) => {
+            if (result.isConfirmed)
+            {
+                var val = result.value;
+                var Msisdno = {};
+                Msisdno.ID = ID;
+                Msisdno.Sim_MSISD_No = val; 
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST',
+                    url: '/MobileNumberSeries/Updatemsisdno',
+                    data: '{local: ' + JSON.stringify(Msisdno) + '}', 
+                    success: function (response) {
+                        var Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            progressBar: true,
+                            timer: 3000
+                        });
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'MSISD Number Update Successfully..!'
+                        })
+                        RefreshPage();
+                    },
+                    failure: function (response) {
+                        $('#result').html(response);
+                    }
+                });
+            }
+        })
+    }
+    function AssignMSISD()
+    {
         var Msisdno = {};
         Msisdno.from = $('#from').val();
         Msisdno.to = $("#sto").val();

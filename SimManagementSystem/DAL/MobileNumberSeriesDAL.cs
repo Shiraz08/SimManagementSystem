@@ -99,5 +99,27 @@ namespace SimManagementSystem.DAL
             }
             return res;
         }
+        public int UpdateMSISD(SimInfo vm) 
+        {
+            int res = 0;
+            try
+            {
+                using (AdoHelper objAdo = new AdoHelper()) 
+                {
+                    SqlParameter[] parameters =  {
+                        new SqlParameter("@ID", vm.ID),
+                        new SqlParameter("@Sim_MSISD_No", vm.Sim_MSISD_No),
+                         new SqlParameter("@ModifiedDate", vm.ModifiedDate),
+                        new SqlParameter("@ModifiedBy", vm.ModifiedBy)
+                        };
+                    res = objAdo.ExecNonQueryProc("SP_Edit_MSISD_Number", parameters);
+                }
+            } 
+            catch (Exception ex)
+            {
+                res = 0;
+            }
+            return res;
+        }
     }
 }
