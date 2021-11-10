@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "ReturnSimHistory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<br />
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Sim Number List</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Employee ID</th>
+                                    <th>Department</th>
+                                    <th>Number</th>
+                                    <th>Employee Name</th>
+                                    <th>BType</th>
+                                    <th>Sim Assign BY</th>
+                                    <th>Sim Assign Date</th>
+                                    <th>Credit Limit</th>
+                                    <th>Voice Package</th>
+                                    <th>Data Package</th>
+                                    <th>Employee Shift</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stutbl"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(function () {
+        GetMSISDList();
+        window.alert = function () { }
+    });
+    function GetMSISDList() {
+        $.ajax({
+            type: 'GET',
+            url: '/SimMobileIssuance/GetReturnSimHistory', 
+            success: function (response) {
+                debugger
+                var op = '';
+                $.each(response, function (key, item) {
+                    op += '<tr><td>' + item.EmployeeID + '</td><td>' + item.DepartmentID + '</td><td>' + item.MobileNumber + '</td><td>' + item.EmployeeName + '</td><td>' + item.BtypeID + '</td><td>' + item.SimAssignBY + '</td><td>' + item.SimAssignDate + '</td><td>' + item.CreditLimit + '</td><td>' + item.VoicePackage + '</td><td>' + item.DataPackage + '</td><td>' + item.EmployeeShift + '</td>';
+
+                });
+                $('#stutbl').empty().append(op);
+                Datatables();
+            },
+            failure: function (response) {
+                $('#result').html(response);
+            }
+        });
+        var local;
+    }
+    </script>

@@ -36,7 +36,26 @@ namespace SimManagementSystem.Controllers
         {
             ViewBag.MobileNumber = db.GetAssignMobileNumber().Select(x => new SelectListItem { Text = x.MobileNumber.ToString(), Value = x.MobileNumber.ToString() }).Distinct().ToList();
             return View();
-        } 
+        }
+        public ActionResult ReturnSimHistory() 
+        {
+            return View();
+        }
+        [HttpGet]
+        public JsonResult GetReturnSimHistory() 
+        {
+            var val = web.GetUserIdentityFromSession();
+            if (val.Name == "Admin")
+            {
+                var list = db.GetReturnSimData();
+                return Json(list, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var list = db.GetReturnSimData().Where(x => x.SimAssignBY == val.Name).ToList(); 
+                return Json(list, JsonRequestBehavior.AllowGet);
+            }
+        }
         [HttpPost]
         public JsonResult EditData(SimMobileIssuanceViewModel simMobileIssuance)
         {

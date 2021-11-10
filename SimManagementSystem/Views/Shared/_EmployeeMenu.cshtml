@@ -9,105 +9,52 @@
         <li class="nav-item "></li>
         <li class="nav-item "><p><h5>Data Entery Foams</h5></p></li>
         <li class="nav-item ">
-            <a href="#" class="nav-link active">
-                <i class="nav-icon fa fa-sim-card"></i>
-                <p>
-                    Add MSISD Number
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-
-                @if (Menulist != null)
+            @if (Menulist != null)
+            {
+                if (list.Contains(2))
                 {
-
-                    if (list.Contains(1))
-                    {
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index", "MSISD")" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Add MSISD No </p>
-                            </a>
-                        </li>
-                    }
-
+                    <a href="@Url.Action("Index", "AssignMSISD")" class="nav-link active">
+                        <i class="nav-icon fa fa-id-card"></i>
+                        <p>
+                            Assign MSISD Number
+                        </p>
+                    </a>
                 }
-            </ul>
+            }
         </li>
         <li class="nav-item ">
-            <a href="#" class="nav-link active">
-                <i class="nav-icon fa fa-id-card"></i>
-                <p>
-                    Assign MSISD Number
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                @if (Menulist != null)
+            @if (Menulist != null)
+            {
+                if (list.Contains(5))
                 {
-                    if (list.Contains(2))
-                    {
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index", "AssignMSISD")" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Assign MSISD No </p>
-                            </a>
-                        </li>
-                    }
+                    <a href="@Url.Action("GetSim", "MobileNumberSeries")" class="nav-link active">
+                        <i class="nav-icon fa fa-mobile"></i>
+                        <p>
+                            Sim Card Series
+                        </p>
+                    </a>
                 }
-            </ul>
+            }
         </li>
         <li class="nav-item ">
-            <a href="#" class="nav-link active">
-                <i class="nav-icon fa fa-mobile"></i>
-                <p>
-                    Mobile No. Series
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                @if (Menulist != null)
+            @if (Menulist != null)
+            {
+                if (list.Contains(6))
                 {
-                    if (list.Contains(5))
-                    {
-                        <li class="nav-item">
-                            <a href="@Url.Action("GetSim","MobileNumberSeries")" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Add Mobile No. Series</p>
-                            </a>
-                        </li>
-                    }
+                    <a href="@Url.Action("AddSimMobileIssuance", "SimMobileIssuance")" class="nav-link active">
+                        <i class="nav-icon fa fa-id-card"></i>
+                        <p>
+                            Sim Issuance
+                        </p>
+                    </a>
                 }
-            </ul>
-        </li>
-        <li class="nav-item ">
-            <a href="#" class="nav-link active">
-                <i class="nav-icon fa fa-id-card"></i>
-                <p>
-                    Sim & Mobile Issuance
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                @if (Menulist != null)
-                {
-                    if (list.Contains(6))
-                    {
-                        <li class="nav-item">
-                            <a href="@Url.Action("AddSimMobileIssuance","SimMobileIssuance")" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Add Sim & Mobile Issuance</p>
-                            </a>
-                        </li>
-                    }
-                }
-            </ul>
+            }
         </li>
         <li class="nav-item ">
             <a href="#" class="nav-link active">
                 <i class="nav-icon fa fa-people-arrows"></i>
                 <p>
-                    Assign Sim To Campus
+                    Assign Sim to Business Partner 
                     <i class="right fas fa-angle-left"></i>
                 </p>
             </a>
@@ -117,7 +64,7 @@
                     if (list.Contains(6))
                     {
                         <li class="nav-item">
-                            <a href="@Url.Action("Index","SimNewPartner")" class="nav-link">
+                            <a href="@Url.Action("Index", "SimNewPartner")" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Partner Campus Sim List</p>
                             </a>
@@ -126,7 +73,7 @@
                     if (list.Contains(9))
                     {
                         <li class="nav-item">
-                            <a href="@Url.Action("SimAssignPartnerCampus","SimNewPartner")" class="nav-link">
+                            <a href="@Url.Action("SimAssignPartnerCampus", "SimNewPartner")" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Approve Partner Campus Sim</p>
                             </a>
@@ -149,41 +96,39 @@
                     if (list.Contains(10))
                     {
                         <li class="nav-item">
-                            <a href="@Url.Action("ReturnSim","SimMobileIssuance")" class="nav-link">
+                            <a href="@Url.Action("ReturnSim", "SimMobileIssuance")" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Retrun Sim List</p>
+                            </a>
+                        </li>
+                    }
+                    if (list.Contains(13)) 
+                    {
+                        <li class="nav-item">
+                            <a href="@Url.Action("ReturnSimHistory","SimMobileIssuance")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Retrun Sim History</p>
                             </a>
                         </li>
                     }
                 }
             </ul>
         </li>
-
-
         <li class="nav-item "></li>
         <li class="nav-item "><p><h5>Assign Menu</h5></p></li>
         <li class="nav-item ">
-            <a href="#" class="nav-link active">
-                <i class="nav-icon fa fa-bars"></i>
-                <p>
-                    Menus
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                @if (Menulist != null)
+            @if (Menulist != null)
+            {
+                if (list.Contains(4))
                 {
-                    if (list.Contains(4))
-                    {
-                        <li class="nav-item">
-                            <a href="@Url.Action("AssignMenu","Menus")" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Menu List</p>
-                            </a>
-                        </li>
-                    }
+                    <a href="@Url.Action("AssignMenu","Menus")" class="nav-link active">
+                        <i class="nav-icon fa fa-bars"></i>
+                        <p>
+                            Menus
+                        </p>
+                    </a> 
                 }
-            </ul>
+            }
         </li>
         <li class="nav-item "></li>
         <li class="nav-item "><p><h5>Billing</h5></p></li>
@@ -191,7 +136,7 @@
             <a href="#" class="nav-link active">
                 <i class="nav-icon fa fa-money-bill"></i>
                 <p>
-                    Billing Amount
+                    Manage Billing 
                     <i class="right fas fa-angle-left"></i>
                 </p>
             </a>
@@ -203,7 +148,7 @@
                         <li class="nav-item">
                             <a href="@Url.Action("Index","Billing")" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Import Billing Amount</p>
+                                <p>Import Billing</p>
                             </a>
                         </li>
                     }
@@ -222,76 +167,63 @@
         <li class="nav-item "></li>
         <li class="nav-item "><p><h5>Logging</h5></p></li>
         <li class="nav-item ">
-            <a href="#" class="nav-link active">
-                <i class="nav-icon fa fa-history"></i>
-                <p>
-                    Logging History
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                @if (Menulist != null)
+            @if (Menulist != null)
+            {
+                if (list.Contains(3))
                 {
-                    if (list.Contains(3))
-                    {
-                        <li class="nav-item">
-                            <a href="@Url.Action("AddMSISDNoHistory","History")" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Logging List</p>
-                            </a>
-                        </li>
-                    }
+                    <a href="@Url.Action("AddMSISDNoHistory","History")" class="nav-link active">
+                        <i class="nav-icon fa fa-history"></i>
+                        <p>
+                            Logging History
+                        </p>
+                    </a>
                 }
-            </ul>
+            }
         </li>
         <li class="nav-item "></li>
         <li class="nav-item "><p><h5>Setting</h5></p></li>
         <li class="nav-item ">
-            <a href="#" class="nav-link active">
-                <i class="nav-icon fa fa-phone-volume"></i>
-                <p>
-                    Manage Voice Package
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                @if (Menulist != null)
+            @if (Menulist != null)
+            {
+                if (list.Contains(7))
                 {
-                    if (list.Contains(7))
-                    {
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index","VoicePackageName")" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Voice Package List</p>
-                            </a>
-                        </li>
-                    }
+                    <a href="@Url.Action("Index","VoicePackageName")" class="nav-link active">
+                        <i class="nav-icon fa fa-phone-volume"></i>
+                        <p>
+                            Manage Voice Package
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
                 }
-            </ul>
+            }
         </li>
-
         <li class="nav-item ">
-            <a href="#" class="nav-link active">
-                <i class="nav-icon fa fa-database"></i>
-                <p>
-                    Manage Data Package
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                @if (Menulist != null)
+            @if (Menulist != null)
+            {
+                if (list.Contains(8))
                 {
-                    if (list.Contains(8))
-                    {
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index","DataPackageName")" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Data Package List</p>
-                            </a>
-                        </li>
-                    }
+                    <a  href="@Url.Action("Index","DataPackageName")" class="nav-link active">
+                        <i class="nav-icon fa fa-database"></i>
+                        <p>
+                            Manage Data Package
+                        </p>
+                    </a>
                 }
-            </ul>
+            }
+        </li>
+        <li class="nav-item ">
+            @if (Menulist != null)
+            {
+                if (list.Contains(1))
+                {
+                    <a href="@Url.Action("Index", "MSISD")" class="nav-link active">
+                        <i class="nav-icon fa fa-sim-card"></i>
+                        <p>
+                            Manage MSISD Number
+                        </p>
+                    </a>
+                }
+            }
         </li>
     </ul>
 </nav>

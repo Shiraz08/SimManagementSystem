@@ -54,7 +54,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Department &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                                <label>Department</label>
                                 <select id="DepartmentID" name="DepartmentID" class="form-control select2" style="width: 100%;">
                                     @if (ViewBag.Department != null)
                                     {
@@ -72,7 +72,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Campus &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                                <label>Campus </label>
                                 <select id="CampusID" name="CampusID" class="form-control select2" style="width: 100%;">
                                     @if (ViewBag.Campus != null)
                                     {
@@ -234,7 +234,7 @@
     }
     function CheckValidation() {
         
-        if ($('#EmployeeShift :selected').val() == "" || $('#MobileNumber :selected').val() == "" || $('#DepartmentID :selected').val() == "" || $('#CampusID :selected').val() == "" || $('#EmployeeCNIC :selected').val() == "" || $('#EmployeeName :selected').val() == "" || $('#EmployeeDesiginationID').val() == "" || $('#BtypeID :selected').val() == "" || $('#VoicePackage:selected').val() == "" ||  $('#DataPackage:selected').val() == "" || $('#CreditLimit').val() == "")
+        if ($('#EmployeeShift :selected').val() == "" || $('#MobileNumber :selected').val() == "" || $('#EmployeeCNIC :selected').val() == "" || $('#EmployeeName :selected').val() == "" || $('#EmployeeDesiginationID').val() == "" || $('#BtypeID :selected').val() == "" || $('#VoicePackage:selected').val() == "" ||  $('#DataPackage:selected').val() == "" || $('#CreditLimit').val() == "")
         {
             toastr.error('Required Fields are Mandatory...!')
         }

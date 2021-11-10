@@ -65,6 +65,21 @@ namespace SimManagementSystem.DAL
             }
             return res;
         }
+        public int UpdateArear(BillingFile vm) 
+        {
+            SqlConnection con = new SqlConnection("Data Source=ips1.cyberisol.com;Initial Catalog=Unique;uid=unique;pwd=NMTL@hore19Ch@irm@n!@#$");
+            string query = "UPDATE SIM_Tbl_BillingAmount set Arears = @Arears, Modifyby = @Modifyby , Modifydate = @Modifydate WHERE BillingId = @BillingId";
+            SqlCommand cmd = new SqlCommand(query, con);
+            cmd.Parameters.AddWithValue("@Arears", vm.Arears);
+            cmd.Parameters.AddWithValue("@BillingId", vm.BillingId);
+            cmd.Parameters.AddWithValue("@Modifyby", vm.Modifyby);
+            cmd.Parameters.AddWithValue("@Modifydate", vm.Modifydate);
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+            return 1;
+
+        }
         public int SaveHistory()
         {
             int res = 0;

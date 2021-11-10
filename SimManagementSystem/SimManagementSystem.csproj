@@ -247,6 +247,7 @@
     <Compile Include="Models\MSISDViewModel.cs" />
     <Compile Include="Models\SimInfo.cs" />
     <Compile Include="Models\SimMobileIssuance.cs" />
+    <Compile Include="Models\SimReturnHistory.cs" />
     <Compile Include="Models\TableLayout.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Models\ViewModelMenus.cs" />
@@ -2291,6 +2292,7 @@
     <Content Include="Views\Shared\_EmployeeMenu.cshtml" />
     <Content Include="Views\Billing\Index.cshtml" />
     <Content Include="Views\Billing\Addmanualbilling.cshtml" />
+    <Content Include="Views\SimMobileIssuance\ReturnSimHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

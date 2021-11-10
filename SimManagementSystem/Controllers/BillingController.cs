@@ -42,6 +42,16 @@ namespace SimManagementSystem.Controllers
             return Json(true, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
+        public JsonResult UpdateArear(BillingFile dataToPost)  
+        {
+            var val = web.GetUserIdentityFromSession(); 
+            dataToPost.Modifyby = val.Name;
+            dataToPost.Modifydate =Convert.ToString(DateTime.Now);
+            db.UpdateArear(dataToPost); 
+            db.SaveHistory();
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
         public ActionResult SaveBillingFile(BillingList dataToPost)  
         {
             var val = web.GetUserIdentityFromSession();

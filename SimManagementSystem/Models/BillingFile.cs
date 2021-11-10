@@ -21,6 +21,7 @@ namespace SimManagementSystem.Models
         public string Years { get; set; }
         public string Modifyby { get; set; }
         public string Modifydate { get; set; }
+        public string Status { get; set; }
         public string Createby { get; set; }
         public string Createddate { get; set; }
     }

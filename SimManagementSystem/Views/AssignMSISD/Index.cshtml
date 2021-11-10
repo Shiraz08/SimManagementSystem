@@ -20,8 +20,25 @@
                     <input type="hidden" class="form-control" id="Added_Date" name="Added_Date" />
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label>IT Reference No &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <input type="text" class="form-control" id="IT_Reference_No" name="IT_Reference_No" tabindex="1" />
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile Network &nbsp;<span style="color:red!important"><b>*</b></span></label>
+                            <select name="Mobile_Network" id="Mobile_Network" class="form-control select2" style="width: 100%;" tabindex="3" >
+                                <option value="">Select Mobile Network</option>
+                                <option value="Jazz">Jazz</option>
+                                <option value="Ufone">Ufone</option>
+                                <option value="Zong">Zong</option>
+                                <option value="Telenor">Telenor</option>
+                                <option value="Warid">Warid</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label>Sim MSISD No &nbsp;<span style="color:red!important"><b>*</b></span></label>
-                            <select id="Sim_MSISD_No" name="Sim_MSISD_No" class="form-control select2" style="width: 100%;" onchange="getmobilenetwork();">
+                            <select id="Sim_MSISD_No" name="Sim_MSISD_No" class="form-control select2" style="width: 100%;" onchange="getmobilenetwork();" tabindex="2">
                                 @if (ViewBag.msisd != null)
                                 {
                                     <option value="">Select MSISD No.</option>
@@ -38,29 +55,12 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Mobile Network &nbsp;<span style="color:red!important"><b>*</b></span></label>
-                            <select name="Mobile_Network" id="Mobile_Network" class="form-control select2" style="width: 100%;" >
-                                <option value="">Select Mobile Network</option>
-                                <option value="Jazz">Jazz</option>
-                                <option value="Ufone">Ufone</option>
-                                <option value="Zong">Zong</option>
-                                <option value="Telenor">Telenor</option>
-                                <option value="Warid">Warid</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>IT Reference No &nbsp;<span style="color:red!important"><b>*</b></span></label>
-                            <input type="text" class="form-control" id="IT_Reference_No" name="IT_Reference_No" />
-                        </div>
-                        <div class="form-group">
                             <label>Mobile Number &nbsp;<span style="color:red!important"><b>*</b></span></label>
-                            <input type="text" class="form-control" id="Mobile_Number" name="Mobile_Number" data-inputmask='"mask": "09999999999"' data-mask />
+                            <input type="text" class="form-control" id="Mobile_Number" name="Mobile_Number" data-inputmask='"mask": "09999999999"' data-mask  tabindex="4"/>
                         </div>
                         <div class="form-group right" style="padding-top: 22px;">
                             <label></label>
-                            <button class="btn btn-success mt-2" id="addupbtn" onclick="CheckValidation()">Assign MSISD</button>
+                            <button class="btn btn-success mt-2" id="addupbtn" onclick="CheckValidation()" tabindex="5">Assign MSISD</button> 
                         </div>
                     </div>
                 </div>

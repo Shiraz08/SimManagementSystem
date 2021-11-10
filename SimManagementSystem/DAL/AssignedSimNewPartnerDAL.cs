@@ -107,6 +107,23 @@ namespace SimManagementSystem.DAL
                         };
                     res = objAdo.ExecNonQueryProc("SP_Insert_History", parameters);
                 }
+                //Add Sim History
+                using (AdoHelper objAdo = new AdoHelper())
+                {
+                    SqlParameter[] parameters =
+                        {
+                           new SqlParameter("@EmployeeName", vm.OwnerName),
+                           new SqlParameter("@SimAssignDate",Convert.ToString(DateTime.Now)),
+                           new SqlParameter("@SimAssignBY", list.EmployeeName),
+                           new SqlParameter("@DataPackage", vm.DataPackage),
+                           new SqlParameter("@VoicePackage", vm.VoicePackageName),
+                           new SqlParameter("@EmployeeShift", vm.EmployeeShift),
+                           new SqlParameter("@CreditLimit", vm.CreditLimit),
+                           new SqlParameter("@MobileNumber", vm.MobileNumber),
+                           new SqlParameter("@IsReturn", null)
+                        };
+                    res = objAdo.ExecNonQueryProc("Sp_Add_SimHistory", parameters);
+                }
                 UpdateNUmberStatus(vm.MobileNumber); 
             }
             catch (Exception ex)

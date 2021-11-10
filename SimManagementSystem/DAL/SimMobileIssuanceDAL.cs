@@ -69,6 +69,24 @@ namespace SimManagementSystem.DAL
             }
             return list;
         }
+        public List<SimReturnHistory> GetReturnSimData()
+        {
+            List<SimReturnHistory> list = new List<SimReturnHistory>();
+            try
+            {
+
+                using (AdoHelper adoHelper = new AdoHelper())
+                {
+                    DataTable dt = adoHelper.ExecDataTableProc("Sp_Get_MobileNumberIssuance"); 
+                    list = new CommonFunction().GetObjectList<SimReturnHistory>(dt); 
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return list;
+        }
         public int EditSimMobileIssuance(SimMobileIssuanceViewModel local)
         {
             var val = web.GetUserIdentityFromSession().UserId;
@@ -172,8 +190,30 @@ namespace SimManagementSystem.DAL
                     locals[13].Value = local.CreditLimit; 
                     locals[14].Value = local.VoicePackageName;
                     adoHelper.ExecNonQueryProc("Sp_Add_MobileNumberIssuance", locals);
+                    //Add Sim History
                     var vals = web.GetUserIdentityFromSession().UserId;
                     var lists = ud.GetEmployeeImage(vals);
+                    using (AdoHelper objAdo = new AdoHelper())
+                    {
+                        SqlParameter[] parameters =
+                            {
+                           new SqlParameter("@EmployeeName", local.EmployeeName),
+                           new SqlParameter("@SimAssignDate",Convert.ToString(DateTime.Now)),
+                           new SqlParameter("@SimAssignBY", list.EmployeeName),
+                           new SqlParameter("@DataPackage", local.DataPackage),
+                           new SqlParameter("@VoicePackage", local.VoicePackageName),
+                           new SqlParameter("@EmployeeShift", local.EmployeeShift),
+                           new SqlParameter("@CreditLimit", local.CreditLimit),
+                           new SqlParameter("@EmployeeID", local.EmployeeID),
+                           new SqlParameter("@CampusID", local.CampusID),
+                           new SqlParameter("@DepartmentID", local.DepartmentID),
+                           new SqlParameter("@BtypeID", local.BtypeID),
+                           new SqlParameter("@MobileNumber", local.MobileNumber),
+                           new SqlParameter("@IsReturn", null)
+                        };
+                        res = objAdo.ExecNonQueryProc("Sp_Add_SimHistory", parameters);
+                    }
+                    //Add Log
                     using (AdoHelper objAdo = new AdoHelper())
                     {
                         SqlParameter[] parameters =
@@ -185,6 +225,7 @@ namespace SimManagementSystem.DAL
                         };
                         res = objAdo.ExecNonQueryProc("SP_Insert_History", parameters);
                     }
+                    //Update Number Status
                     UpdateNUmberStatus(local.MobileNumber);
                 }
             }
@@ -365,7 +406,7 @@ namespace SimManagementSystem.DAL
         public List<Campus> GetCampus()
         {
             List<Campus> EvaluationParameters = new List<Campus>();
-            DataTable dt = new AdoHelper().ExecDataTable("SELECT  id,campusname FROM school where ActiveSChool = 1");
+            DataTable dt = new AdoHelper().ExecDataTable("SELECT  id,campusname + ' ' +'(' + Building + ')' FROM school where ActiveSChool = 1");
             if (dt != null && dt.Rows.Count > 0)
             {
                 foreach (DataRow DR in dt.Rows)

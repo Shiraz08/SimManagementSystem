@@ -3,6 +3,12 @@
     ViewBag.Title = "Addmanualbilling";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .textareas {
+        background-color: white !important;
+        border-color: black !important;
+    }
+</style>
 
 <br />
 <section class="content">
@@ -172,6 +178,7 @@
                                     <th>Total Amount</th>
                                     <th>Payable By UGI</th>
                                     <th>Arears</th>
+                                    <th>Status</th>
                                     <th>Month</th>
                                     <th>Year</th>
                                     <th>Created By</th>
@@ -195,6 +202,48 @@
         window.alert = function () { }
         $('.select2').select2();
     });
+    function AddArearsAmount(BillingId) {
+        var text = Swal.fire({
+            input: 'textarea',
+            inputLabel: 'Arear',
+            inputPlaceholder: 'Enter Arear here...',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            closeOnConfirm: true,
+            customClass: 'textareas',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var Arears = result.value;
+                var Msisdno = {};
+                Msisdno.BillingId = BillingId;
+                Msisdno.Arears = Arears;
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST',
+                    url: '/Billing/UpdateArear',
+                    data: '{dataToPost: ' + JSON.stringify(Msisdno) + '}',
+                    success: function (response) {
+                        var Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            progressBar: true,
+                            timer: 3000
+                        });
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Arear Update Successfully..!'
+                        })
+                        RefreshPage();
+                    },
+                    failure: function (response) {
+                        $('#result').html(response);
+                    }
+                });
+            }
+        })
+    }
     function GetBillingList()
     {
         $.ajax({
@@ -203,8 +252,8 @@
             success: function (response) {
                 var op = '';
                 $.each(response, function (key, item) {
-                    op += '<tr><td>' + item.UserName + '</td><td>' + item.Designation + '</td><td>' + item.Campus_Department + '</td><td>' + item.SimNumber + '</td><td>' + item.UGILimit + '</td><td>' + item.TotalAmount + '</td><td>' + item.PayableByUGI + '</td><td>' + item.Arears + '</td><td>' + item.Months + '</td><td>' + item.Years + '</td><td>' + item.Createby + '</td><td>' + item.Createddate + '</td>';
-                    op += '<td><a href="javascript:;" onclick="DeleteBillingAmount(\'' + item.BillingId + '\')" class="btn btn-danger mt-2">Delete</a></td></tr>';
+                    op += '<tr><td>' + item.UserName + '</td><td>' + item.Designation + '</td><td>' + item.Campus_Department + '</td><td>' + item.SimNumber + '</td><td>' + item.UGILimit + '</td><td>' + item.TotalAmount + '</td><td>' + item.PayableByUGI + '</td><td>' + item.Arears + '</td><td>' + item.Status + '</td><td>' + item.Months + '</td><td>' + item.Years + '</td><td>' + item.Createby + '</td><td>' + item.Createddate + '</td>';
+                    op += '<td><a href="javascript:;" onclick="DeleteBillingAmount(\'' + item.BillingId + '\')" class="btn btn-danger mt-2">Delete</a><a href="javascript:;" onclick="AddArearsAmount(\'' + item.BillingId + '\')" class="btn btn-info mt-2">Add Arear</a></td></tr>';
                 });
                 $('#stutbl').empty().append(op);
                 Datatables();
